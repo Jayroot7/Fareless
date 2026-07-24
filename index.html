@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fareless | Save Money On Your Hybrid Commute</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800p
+
+<style>
+
+:root{
+    --orange:#ff7a00;
+    --orange-dark:#e76600;
+    --bg:#ffffff;
+    --text:#111827;
+    --muted:#6b7280;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Inter',sans-serif;
+    color:var(--text);
+    background:white;
+    overflow-x:hidden;
+}
+
+.hero{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:40px;
+    background:
+        radial-gradient(circle at top left,#fff4e8 0%,white 45%),
+        linear-gradient(180deg,#fff,#fff);
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:600px;
+    height:600px;
+    background:var(--orange);
+    border-radius:50%;
+    filter:blur(180px);
+    opacity:.12;
+    top:-300px;
+    right:-150px;
+}
+
+.container{
+    max-width:1200px;
+    width:100%;
+    z-index:2;
+}
+
+nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:80px;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:800;
+    color:var(--orange);
+    letter-spacing:-1px;
+}
+
+.cta-nav{
+    background:var(--orange);
+    color:white;
+    padding:12px 24px;
+    border-radius:50px;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.hero-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:center;
+}
+
+.badge{
+    display:inline-block;
+    padding:10px 16px;
+    background:#fff3e6;
+    color:var(--orange);
+    border-radius:30px;
+    font-weight:600;
+    margin-bottom:24px;
+}
+
+h1{
+    font-size:68px;
+    font-weight:800;
+    line-height:1;
+    letter-spacing:-3px;
+    margin-bottom:25px;
+}
+
+.highlight{
+    color:var(--orange);
+}
+
+.subtitle{
+    font-size:22px;
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:40px;
+}
+
+.buttons{
+    display:flex;
+    gap:15px;
+}
+
+.primary{
+    background:var(--orange);
+    color:white;
+    text-decoration:none;
+    padding:18px 30px;
+    border-radius:16px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.primary:hover{
+    background:var(--orange-dark);
+}
+
+.secondary{
+    border:2px solid #e5e7eb;
+    color:#111827;
+    text-decoration:none;
+    padding:18px 30px;
+    border-radius:16px;
+    font-weight:700;
+}
+
+.phone{
+    background:white;
+    border-radius:35px;
+    padding:30px;
+    box-shadow
