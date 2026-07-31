@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting Around Edinburgh — Trams, Buses, Voi Bikes & the City Pass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange: #FF5A1F;
+    --orange-dark: #E8470F;
+    --orange-light: #FF8C42;
+    --peach: #FFF1E6;
+    --ink: #191512;
+    --ink-soft: #6B6259;
+    --white: #FFFFFF;
+    --line: #F0E3D8;
+    --shadow: 0 20px 40px -20px rgba(232, 71, 15, 0.35);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:0.35;
+    z-index:0;
+    pointer-events:none;
+  }
+  .blob-1{ width:480px; height:480px; background:var(--orange-light); top:-180px; right:-160px; }
+  .blob-2{ width:360px; height:360px; background:var(--peach); bottom:-140px; left:-120px; opacity:0.9; }
+
+  header{
+    position:relative; z-index:2;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 28px 6vw;
+  }
+  .logo{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.4rem;
+    letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--orange);
+    display:inline-block;
+    box-shadow:0 0 0 5px var(--peach);
+  }
+  .nav-badge{
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--orange-dark);
+    background:var(--peach);
+    padding:8px 16px;
+    border-radius:999px;
+    letter-spacing:0.02em;
+  }
+
+  main{
+    position:relative; z-index:2;
+    max-width:760px;
+    margin:0 auto;
+    padding: 4vh 6vw 8vh;
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.8rem; font-weight:700;
+    color:var(--orange-dark);
+    background:var(--white);
+    border:1.5px solid var(--orange-light);
+    padding:7px 16px;
+    border-radius:999px;
+    margin-bottom:24px;
+  }
+
+  h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:700;
+    font-size:clamp(2rem, 5vw, 3rem);
+    line-height:1.08;
+    letter-spacing:-0.02em;
+    margin-bottom:18px;
+  }
+  h1 .accent{ color:var(--orange); }
+
+  .subhead{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    line-height:1.65;
+    max-width:600px;
+    margin-bottom:20px;
+  }
+
+  .meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-bottom:44px;
+    display:flex;
+    gap:16px;
+    flex-wrap:wrap;
+  }
+  .meta span strong{ color:var(--orange-dark); }
+
+  .toc{
+    background:var(--peach);
+    border:1.5px solid var(--line);
+    border-radius:16px;
+    padding:20px 24px;
+    margin-bottom:52px;
+  }
+  .toc-title{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:0.95rem;
+    margin-bottom:12px;
+  }
+  .toc ul{
+    list-style:none;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px 20px;
+  }
+  .toc a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    font-size:0.88rem;
+    font-weight:500;
+    transition:color .15s ease;
+  }
+  .toc a:hover{ color:var(--orange-dark); }
+
+  section{
+    margin-bottom:56px;
+    scroll-margin-top:24px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:16px;
+  }
+  .icon-badge{
+    width:48px; height:48px;
+    border-radius:14px;
+    background:var(--peach);
+    border:1.5px solid var(--orange-light);
+    display:flex; align-items:center; justify-content:center;
+    font-size:22px;
+    flex-shrink:0;
+  }
+  h2{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.5rem;
+    letter-spacing:-0.01em;
+  }
+
+  section p{
+    color:var(--ink-soft);
+    line-height:1.7;
+    font-size:0.98rem;
+    margin-bottom:14px;
+  }
+  section p strong{ color:var(--ink); font-weight:600; }
+
+  .fact-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:18px 0 6px;
+  }
+  .fact-pill{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--white);
+    border:1.5px solid var(--line);
+    padding:8px 14px;
+    border-radius:10px;
+  }
+  .fact-pill strong{ color:var(--orange-dark); }
+
+  .tip{
+    background:var(--peach);
+    border-left:3px solid var(--orange);
+    border-radius:0 12px 12px 0;
+    padding:14px 18px;
+    margin-top:16px;
+    font-size:0.9rem;
+    color:var(--ink);
+  }
+  .tip strong{ color:var(--orange-dark); }
+
+  /* Airport route section */
+  .airport-section{
+    background:var(--peach);
+    border-radius:24px;
+    padding:36px 32px;
+    margin-bottom:56px;
+  }
+  .airport-section h2{ margin-bottom:6px; }
+  .airport-section > p.subhead{
+    color:var(--ink-soft);
+    margin-bottom:28px;
+    font-size:0.95rem;
+  }
+
+  .route-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-bottom:24px;
+  }
+  .route-card{
+    background:var(--white);
+    border-radius:16px;
+    padding:22px;
+    border:1.5px solid var(--line);
+  }
+  .route-card-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:12px;
+  }
+  .route-card-head .stop{
+    width:38px; height:38px;
+    border-radius:50%;
+    background:var(--peach);
+    border:2px solid var(--orange-light);
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px;
+    flex-shrink:0;
+  }
+  .route-card-head h3{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+  }
+  .route-card ol{
+    padding-left:20px;
+    color:var(--ink-soft);
+    font-size:0.9rem;
+    line-height:1.75;
+  }
+  .route-card ol li strong{ color:var(--ink); }
+  .route-stats{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:14px;
+  }
+  .route-stats .fact-pill{ font-size:0.72rem; padding:6px 10px; }
+
+  .direction-divider{
+    text-align:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.75rem;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin:8px 0 20px;
+  }
+
+  .route-full{
+    background:var(--white);
+    border-radius:16px;
+    padding:22px;
+    border:1.5px solid var(--line);
+  }
+
+  /* comparison table */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:18px;
+    background:var(--white);
+    border-radius:14px;
+    overflow:hidden;
+    border:1.5px solid var(--line);
+  }
+  th, td{
+    text-align:left;
+    padding:12px 14px;
+    font-size:0.85rem;
+  }
+  th{
+    background:var(--peach);
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    color:var(--ink);
+  }
+  td{ color:var(--ink-soft); border-top:1px solid var(--line); }
+  td strong{ color:var(--ink); }
+
+  .disclaimer{
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    background:var(--white);
+    border:1.5px dashed var(--line);
+    border-radius:12px;
+    padding:14px 18px;
+    margin-top:24px;
+  }
+
+  footer{
+    position:relative; z-index:2;
+    text-align:center;
+    padding:28px 6vw 40px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    border-top:1.5px solid var(--line);
+  }
+  footer a{ color:var(--orange-dark); text-decoration:none; font-weight:600; }
+
+  @media (max-width:640px){
+    .toc ul{ grid-template-columns:1fr; }
+    .route-grid{ grid-template-columns:1fr; }
+    table{ font-size:0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<header>
+  <div class="logo"><span class="dot"></span>Fareless Guides</div>
+  <div class="nav-badge">City Guide</div>
+</header>
+
+<main>
+  <span class="eyebrow">🏴󠁧󠁢󠁳󠁣󠁴󠁿 Edinburgh Travel</span>
+
+  <h1>Getting around Edinburgh <span class="accent">without the stress.</span></h1>
+
+  <p class="subhead">
+    Edinburgh is a walkable city, but between the hills, the cobbles, and the distance from the airport,
+    you'll want to know your options. Here's a plain-English rundown of trams, buses, Voi bikes,
+    the Edinburgh City Pass, and the open-top tour buses — plus exactly how to get in from the airport.
+  </p>
+
+  <div class="meta">
+    <span>🕒 <strong>8 min read</strong></span>
+    <span>📍 <strong>Edinburgh, Scotland</strong></span>
+    <span>✅ <strong>Fact-checked for 2026</strong></span>
+  </div>
+
+  <div class="toc">
+    <div class="toc-title">Jump to a section</div>
+    <ul>
+      <li><a href="#trams">🚊 Trams</a></li>
+      <li><a href="#buses">🚌 Lothian Buses</a></li>
+      <li><a href="#voi">🛴 Voi Bikes</a></li>
+      <li><a href="#citypass">🎟️ Edinburgh City Pass</a></li>
+      <li><a href="#opentop">🚍 Open-Top Bus Tours</a></li>
+      <li><a href="#airport">✈️ Airport ↔ City Route</a></li>
+    </ul>
+  </div>
+
+  <section id="trams">
+    <div class="section-head">
+      <div class="icon-badge">🚊</div>
+      <h2>Trams</h2>
+    </div>
+    <p>
+      Edinburgh's tram line runs in a single line from <strong>Edinburgh Airport</strong> in the west,
+      through Haymarket and along Princes Street, out to <strong>Newhaven</strong> on the waterfront in the east.
+      It's modern, step-free, and by far the calmest way to travel with luggage — no traffic lights to fight,
+      just a smooth run on dedicated track.
+    </p>
+    <p>
+      Trams run roughly every <strong>7–10 minutes</strong> at peak times and a little less often in the evening.
+      You buy a ticket from the machine on the platform (or tap a contactless card/phone directly on board) —
+      there are no ticket barriers, but inspectors do check, so always validate before you travel.
+    </p>
+    <div class="fact-row">
+      <span class="fact-pill">Route: <strong>Airport → Newhaven</strong></span>
+      <span class="fact-pill">Frequency: <strong>~7–10 min</strong></span>
+      <span class="fact-pill">Best for: <strong>Airport transfers, waterfront/Leith</strong></span>
+    </div>
+    <div class="tip"><strong>Good to know:</strong> the tram does not stop right at Waverley Station — the closest stop is Princes Street/St Andrew Square, about a 10-minute walk away.</div>
+  </section>
+
+  <section id="buses">
+    <div class="section-head">
+      <div class="icon-badge">🚌</div>
+      <h2>Lothian Buses</h2>
+    </div>
+    <p>
+      <strong>Lothian Buses</strong> run the city's everyday bus network and are the backbone of getting around —
+      dozens of routes reach almost everywhere, including areas the tram doesn't touch, like the Old Town closes,
+      Stockbridge, and the southside.
+    </p>
+    <p>
+      Fares are flat regardless of distance, and the driver won't give change, so have the exact fare or —
+      much easier — just tap a contactless card or phone as you board. Lothian's daily and weekly caps mean
+      you'll never pay more than the cap even if you hop on and off all day.
+    </p>
+    <div class="fact-row">
+      <span class="fact-pill">Coverage: <strong>City-wide network</strong></span>
+      <span class="fact-pill">Payment: <strong>Contactless tap-on</strong></span>
+      <span class="fact-pill">Best for: <strong>Reaching anywhere off the tram line</strong></span>
+    </div>
+    <div class="tip"><strong>Tip:</strong> download the free <strong>Lothian Buses app</strong> for live arrival times and to buy tickets in advance if you'd rather not tap a card.</div>
+  </section>
+
+  <section id="voi">
+    <div class="section-head">
+      <div class="icon-badge">🛴</div>
+      <h2>Voi Bikes & Scooters</h2>
+    </div>
+    <p>
+      <strong>Voi</strong> operates Edinburgh's dockless e-bike and e-scooter share scheme. Pick one up with the
+      app, ride it, and leave it in a designated parking zone near your destination — no need to return it to
+      where you started.
+    </p>
+    <p>
+      They're a fun way to cover ground quickly, especially along the flatter routes like the canal towpath or
+      the waterfront to Leith. Worth knowing before you hop on: <strong>Edinburgh is hilly</strong>, so an
+      e-bike (with pedal assist) is usually a much easier ride than a scooter if your route climbs at all,
+      particularly around the Old Town and up toward the Castle.
+    </p>
+    <div class="fact-row">
+      <span class="fact-pill">Type: <strong>Dockless e-bike / e-scooter</strong></span>
+      <span class="fact-pill">Pricing: <strong>Unlock fee + per-minute</strong></span>
+      <span class="fact-pill">Best for: <strong>Short hops, flat waterfront routes</strong></span>
+    </div>
+    <div class="tip"><strong>Tip:</strong> scooters must be parked in marked bays shown in the app — leaving one blocking a pavement can land you a fine, so always check the in-app map before ending your ride.</div>
+  </section>
+
+  <section id="citypass">
+    <div class="section-head">
+      <div class="icon-badge">🎟️</div>
+      <h2>Edinburgh City Pass</h2>
+    </div>
+    <p>
+      The <strong>Edinburgh City Pass</strong> bundles free or discounted entry to major attractions — think
+      Edinburgh Castle, the Royal Yacht Britannia, and various tours — into a single ticket, usually alongside
+      unlimited travel on the hop-on hop-off open-top buses for the days it covers.
+    </p>
+    <p>
+      It's worth doing the maths before buying: add up what you'd actually pay for the attractions on your list
+      plus a day or two of open-top bus travel, then compare that to the pass price. For a packed few days of
+      sightseeing it can save real money and hassle; for a slower, one-or-two-sight trip you may be better off
+      paying individually.
+    </p>
+    <div class="fact-row">
+      <span class="fact-pill">Includes: <strong>Attraction entry + bus tours</strong></span>
+      <span class="fact-pill">Formats: <strong>1, 2, or 3-day options</strong></span>
+      <span class="fact-pill">Best for: <strong>Attraction-heavy itineraries</strong></span>
+    </div>
+    <div class="tip"><strong>Tip:</strong> book popular attractions like the Castle in advance even with a pass — it reserves your slot rather than guaranteeing walk-up entry.</div>
+  </section>
+
+  <section id="opentop">
+    <div class="section-head">
+      <div class="icon-badge">🚍</div>
+      <h2>Open-Top Bus Tours</h2>
+    </div>
+    <p>
+      The classic <strong>hop-on hop-off open-top buses</strong> loop past all the big sights — the Castle,
+      Royal Mile, Holyrood Palace, the Grassmarket, and more — with recorded commentary and a stop roughly
+      every 10–15 minutes. Buy a ticket (typically valid 24 or 48 hours) and hop off wherever catches your eye,
+      then catch the next bus onward whenever you're ready.
+    </p>
+    <p>
+      They're less about efficient point-to-point travel and more about orientation — a good first move on
+      day one to get your bearings, see everything from above street level, and decide what's worth coming
+      back to on foot.
+    </p>
+    <div class="fact-row">
+      <span class="fact-pill">Ticket: <strong>24 / 48 hr hop-on hop-off</strong></span>
+      <span class="fact-pill">Stops: <strong>Every ~10–15 min</strong></span>
+      <span class="fact-pill">Best for: <strong>First-day orientation, top sights</strong></span>
+    </div>
+    <div class="tip"><strong>Tip:</strong> sit upstairs at the front if the weather's playing along — bring a layer even in summer, Edinburgh wind doesn't care about the forecast.</div>
+  </section>
+
+  <section class="airport-section" id="airport">
+    <h2>✈️ Airport ↔ City Centre: the full route</h2>
+    <p class="subhead">Two easy ways in — the tram and the Airlink 100 bus. Here's exactly how each one works, in both directions.</p>
+
+    <div class="route-grid">
+      <div class="route-card">
+        <div class="route-card-head">
+          <div class="stop">🚊</div>
+          <h3>By Tram</h3>
+        </div>
+        <ol>
+          <li>Follow signs for <strong>Trams</strong> from the terminal — the stop is a short walk outside arrivals.</li>
+          <li>Buy a single or return ticket from the platform machine, or just tap a contactless card/phone as you board.</li>
+          <li>Ride toward <strong>York Place / Newhaven</strong>.</li>
+          <li>Get off at <strong>Princes Street</strong> or <strong>St Andrew Square</strong> for the city centre (roughly 25–30 minutes from the airport).</li>
+        </ol>
+        <div class="route-stats">
+          <span class="fact-pill">~<strong>25–30 min</strong></span>
+          <span class="fact-pill">Every <strong>7–10 min</strong></span>
+          <span class="fact-pill">No stop at Waverley — <strong>10 min walk</strong></span>
+        </div>
+      </div>
+
+      <div class="route-card">
+        <div class="route-card-head">
+          <div class="stop">🚌</div>
+          <h3>By Airlink 100 Bus</h3>
+        </div>
+        <ol>
+          <li>Follow signs for <strong>Buses</strong> just outside the terminal — the Airlink stop is clearly marked.</li>
+          <li>Buy on board with contactless, or pre-book via the <strong>Bus & Tram app</strong>.</li>
+          <li>The express bus runs non-stop-ish, with only a couple of stops (Haymarket, Princes Street) en route.</li>
+          <li>Get off at <strong>Waverley Bridge</strong>, right next to Waverley Station, for the city centre.</li>
+        </ol>
+        <div class="route-stats">
+          <span class="fact-pill">~<strong>25–35 min</strong></span>
+          <span class="fact-pill">Every <strong>10 min</strong> (20 min overnight)</span>
+          <span class="fact-pill">Runs <strong>24 hours</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="direction-divider">— and the reverse trip —</div>
+
+    <div class="route-full">
+      <div class="route-card-head">
+        <div class="stop">🔁</div>
+        <h3>City Centre → Airport</h3>
+      </div>
+      <p style="margin-bottom:10px;">Same two options, just run in reverse:</p>
+      <ol style="padding-left:20px; color:var(--ink-soft); font-size:0.9rem; line-height:1.75;">
+        <li><strong>Tram:</strong> catch it heading westbound at <strong>Princes Street</strong> or <strong>St Andrew Square</strong> and ride to the <strong>Airport</strong> terminus — it's the last stop, so you can't miss it.</li>
+        <li><strong>Airlink 100:</strong> pick it up at <strong>Waverley Bridge</strong> (or Haymarket, or Princes Street) heading toward the airport — again, terminus stop, so just stay on until the end of the line.</li>
+      </ol>
+      <div class="tip">
+        <strong>Which one should you take?</strong> The tram is smoother and better for heavy luggage, but doesn't reach Waverley Station directly. The Airlink bus drops you right at Waverley and runs all night, making it the better call for very early or very late flights. Traffic can occasionally slow the bus more than the tram, which runs on its own dedicated track.
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Option</th><th>Journey time</th><th>Frequency</th><th>Ends at</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Tram</strong></td><td>~25–30 min</td><td>Every 7–10 min</td><td>Princes Street / Newhaven line</td></tr>
+        <tr><td><strong>Airlink 100 bus</strong></td><td>~25–35 min</td><td>Every 10 min (20 min overnight)</td><td>Waverley Bridge</td></tr>
+        <tr><td><strong>Local bus (17 / 18)</strong></td><td>~40–55 min</td><td>Less frequent</td><td>Various local stops</td></tr>
+        <tr><td><strong>Taxi</strong></td><td>~20–30 min</td><td>On demand</td><td>Door to door</td></tr>
+      </tbody>
+    </table>
+
+    <div class="disclaimer">
+      Fares change periodically and aren't listed here for that reason — check the <strong>Edinburgh Trams</strong> and
+      <strong>Lothian Buses</strong> websites (or the Bus & Tram app) shortly before you travel to confirm current prices
+      and any service disruptions.
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  A Fareless city guide — because knowing the route matters as much as knowing the fare.
+  <br>© 2026 Fareless. All rights reserved.
+</footer>
+
+</body>
+</html>
