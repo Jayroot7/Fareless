@@ -315,6 +315,38 @@
     transform:translateX(-50%) translateY(0);
   }
 
+  /* Mirror store-badge styles for the calculator link */
+  .calc-badge {
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 18px;
+    border-radius:12px;
+    background:var(--ink);
+    border:1.5px solid var(--ink);
+    color:var(--white);
+    text-decoration:none;
+    cursor:pointer;
+    transition: transform .15s ease, background .2s ease, border-color .2s ease;
+  }
+  
+  .calc-badge:hover {
+    background:var(--orange-dark);
+    border-color:var(--orange-dark);
+    transform:translateY(-2px);
+  }
+  
+  .calc-badge svg { 
+    width:20px; 
+    height:20px; 
+    flex-shrink:0; 
+  }
+    
+  
+
+  
+
   footer{
     position:relative; z-index:2;
     text-align:center;
@@ -391,8 +423,9 @@
         <span class="badge-text"><small>Android</small><span class="store-name">Google Play</span></span>
         <span class="badge-tip">Not live yet — join the list above</span>
       </a>
-          <!-- New Tourist Calculator Button -->
-      <a href="fareless.app/calculator/index.html" class="store-badge" data-store="calculator" aria-label="Open Tourist Calculator">
+      
+      <!-- New Tourist Calculator Button -->
+      <a href="https://fareless.app" class="calc-badge" aria-label="Open Tourist Calculator">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
           <line x1="9" y1="22" x2="15" y2="22"></line>
@@ -408,7 +441,7 @@
         </svg>
         <span class="badge-text"><small>Web App</small><span class="store-name">Tourist Calculator</span></span>
       </a>
- 
+
     </div>
   </div>
 
