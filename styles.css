@@ -83,10 +83,8 @@ cursor: default;
 }
 .hamburger-btn{
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
-  gap:5px;
   width:42px;
   height:42px;
   border-radius:12px;
@@ -99,17 +97,18 @@ cursor: default;
   border-color:var(--orange-light);
   background:var(--peach);
 }
-.hamburger-btn span{
-  display:block;
-  width:18px;
-  height:2px;
-  border-radius:2px;
-  background:var(--ink);
+.hamburger-btn svg{
+  width:20px;
+  height:20px;
+}
+.hamburger-btn .bar{
+  transform-box: fill-box;
+  transform-origin: center;
   transition: transform .25s ease, opacity .2s ease;
 }
-.hamburger-btn.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-.hamburger-btn.open span:nth-child(2){ opacity:0; }
-.hamburger-btn.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
+.hamburger-btn.open .bar1{ transform: translateY(6px) rotate(45deg); }
+.hamburger-btn.open .bar2{ opacity:0; }
+.hamburger-btn.open .bar3{ transform: translateY(-6px) rotate(-45deg); }
 
 .dropdown-menu{
   position:absolute;
