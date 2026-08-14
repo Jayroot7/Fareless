@@ -30,19 +30,27 @@
             box-sizing: border-box;
         }
 
-        button {
-            width: 100%;
-            padding: 10px;
-            background: #3ecf8e;
-            border: none;
-            color: white;
-            cursor: pointer;
+        button{
+          font-family:'Fredoka', sans-serif;
+          font-weight:600;
+          font-size:0.96rem;
+          color:var(--white);
+          background:var(--orange);
+          border:none;
+          padding:15px 26px;
+          border-radius:14px;
+          cursor:pointer;
+          box-shadow:var(--shadow);
+          transition: transform .15s ease, background .2s ease;
+          white-space:nowrap;
         }
 
         button:hover {
             background: #35b67d;
         }
 
+
+        
         #message {
             margin-top: 10px;
             color: red;
