@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #3ecf8e;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #35b67d;
+        }
+
+        #message {
+            margin-top: 10px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box">
+    <h2>Login</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="login()">Login</button>
+
+    <div id="message"></div>
+</div>
+
+<script type="module">
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const supabaseUrl = 'https://tjtccacswjvmpcsczosd.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqdGNjYWNzd2p2bXBjc2N6b3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzA5NzYsImV4cCI6MjEwMTcwNjk3Nn0.VhF0imXq1wQ0kpJnI9w1rwJeMkKmlmjQeC25W31vbtc'
+
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+window.login = async function () {
+
+    const email = document.getElementById('email').value
+    const password = document.getElementById('password').value
+    const message = document.getElementById('message')
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+    })
+
+    if (error) {
+        message.textContent = error.message
+        return
+    }
+
+    window.location.href = "dashboard.html"
+}
+
+</script>
+
+</body>
+</html>
