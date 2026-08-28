@@ -80,7 +80,7 @@ cursor: default;
 }
 .hamburger-btn:hover{ border-color:var(--orange-light); background:var(--peach); }
 .hamburger-btn span{
-  display:block; width:18px; height:2px; border-radius:2px;
+  display:block; width:20px; height:2.5px; border-radius:2px;
   background:var(--ink);
   transition: transform .25s ease, opacity .2s ease;
 }
