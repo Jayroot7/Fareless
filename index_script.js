@@ -62,6 +62,27 @@ document.querySelectorAll('.store-badge').forEach(function(badge){
   });
 });
 
+// ---------- Auth guard ----------
+async function initAuth() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) {
+    window.location.href = 'login.html'
+    return null
+  }
+  return session.user
+}
+
+function renderUserPill(user) {
+  const pill = document.getElementById('user-pill')
+  const emailEl = document.getElementById('user-email')
+  const avatarEl = document.getElementById('user-avatar')
+  const email = user.email || 'Account'
+  emailEl.textContent = email
+  avatarEl.textContent = email.charAt(0).toUpperCase()
+  pill.style.display = 'flex'
+}
+
+
 // ---------- Hamburger menu ----------
 const hamburgerBtn = document.getElementById('hamburger-btn')
 const dropdownMenu = document.getElementById('dropdown-menu')
