@@ -1,3 +1,9 @@
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const supabaseUrl = 'https://tjtccacswjvmpcsczosd.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqdGNjYWNzd2p2bXBjc2N6b3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzA5NzYsImV4cCI6MjEwMTcwNjk3Nn0.VhF0imXq1wQ0kpJnI9w1rwJeMkKmlmjQeC25W31vbtc'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 // Animated waitlist counter
 const counterEl = document.getElementById('counter');
 const target = 1247;
@@ -21,7 +27,7 @@ const submitBtn = document.getElementById('submit-btn');
 const msg = document.getElementById('form-msg');
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-form.addEventListener('submit', function(e){
+form.addEventListener('submit', async function(e){
   e.preventDefault();
   const value = emailInput.value.trim();
 
@@ -36,8 +42,35 @@ form.addEventListener('submit', function(e){
 
   emailInput.classList.remove('error');
   emailInput.disabled = true;
-  submitBtn.textContent = "You're on the list ✓";
   submitBtn.disabled = true;
+  submitBtn.textContent = "Joining...";
+  msg.textContent = '';
+  msg.className = 'form-msg';
+
+  const { error } = await supabase
+    .from('waitlist_signups')
+    .insert({ email: value, source: 'landing_page' });
+
+  if (error) {
+    emailInput.disabled = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Notify me";
+
+    // Unique constraint violation = already signed up, treat as a soft success
+    if (error.code === '23505') {
+      msg.textContent = "You're already on the list — we'll be in touch!";
+      msg.className = 'form-msg success';
+      submitBtn.textContent = "You're on the list ✓";
+      submitBtn.disabled = true;
+      return;
+    }
+
+    msg.textContent = "Something went wrong — please try again.";
+    msg.className = 'form-msg error';
+    return;
+  }
+
+  submitBtn.textContent = "You're on the list ✓";
   msg.textContent = "We'll email " + value + " the moment Fareless opens.";
   msg.className = 'form-msg success';
 
@@ -62,27 +95,6 @@ document.querySelectorAll('.store-badge').forEach(function(badge){
   });
 });
 
-// ---------- Auth guard ----------
-async function initAuth() {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (!session) {
-    window.location.href = 'login.html'
-    return null
-  }
-  return session.user
-}
-
-function renderUserPill(user) {
-  const pill = document.getElementById('user-pill')
-  const emailEl = document.getElementById('user-email')
-  const avatarEl = document.getElementById('user-avatar')
-  const email = user.email || 'Account'
-  emailEl.textContent = email
-  avatarEl.textContent = email.charAt(0).toUpperCase()
-  pill.style.display = 'flex'
-}
-
-
 // ---------- Hamburger menu ----------
 const hamburgerBtn = document.getElementById('hamburger-btn')
 const dropdownMenu = document.getElementById('dropdown-menu')
@@ -98,8 +110,4 @@ hamburgerBtn.addEventListener('click', (e) => {
   hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
 })
 document.addEventListener('click', (e) => { if (!e.target.closest('.menu-wrap')) closeMenu() })
-
-document.getElementById('logout-btn').addEventListener('click', async () => {
-  await supabase.auth.signOut()
-  window.location.href = 'login.html'
-});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu() })
