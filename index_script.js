@@ -62,27 +62,23 @@ document.querySelectorAll('.store-badge').forEach(function(badge){
   });
 });
 
-// Hamburger dropdown menu
-const hamburgerBtn = document.getElementById('hamburger-btn');
-const dropdownMenu = document.getElementById('dropdown-menu');
-
-function closeMenu(){
-  hamburgerBtn.classList.remove('open');
-  hamburgerBtn.setAttribute('aria-expanded', 'false');
-  dropdownMenu.classList.remove('show');
+// ---------- Hamburger menu ----------
+const hamburgerBtn = document.getElementById('hamburger-btn')
+const dropdownMenu = document.getElementById('dropdown-menu')
+function closeMenu() {
+  hamburgerBtn.classList.remove('open')
+  hamburgerBtn.setAttribute('aria-expanded', 'false')
+  dropdownMenu.classList.remove('show')
 }
+hamburgerBtn.addEventListener('click', (e) => {
+  e.stopPropagation()
+  const isOpen = dropdownMenu.classList.toggle('show')
+  hamburgerBtn.classList.toggle('open', isOpen)
+  hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
+})
+document.addEventListener('click', (e) => { if (!e.target.closest('.menu-wrap')) closeMenu() })
 
-hamburgerBtn.addEventListener('click', function(e){
-  e.stopPropagation();
-  const isOpen = dropdownMenu.classList.toggle('show');
-  hamburgerBtn.classList.toggle('open', isOpen);
-  hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-});
-
-document.addEventListener('click', function(e){
-  if (!e.target.closest('.menu-wrap')) closeMenu();
-});
-
-document.addEventListener('keydown', function(e){
-  if (e.key === 'Escape') closeMenu();
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  await supabase.auth.signOut()
+  window.location.href = 'login.html'
 });
