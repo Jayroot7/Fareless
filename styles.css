@@ -76,9 +76,11 @@ cursor: default;
   border:1.5px solid var(--line);
   background:var(--white);
   cursor:pointer;
+  padding:0;
+  box-shadow:none;
   transition: border-color .2s ease, background .2s ease;
 }
-.hamburger-btn:hover{ border-color:var(--orange-light); background:var(--peach); }
+.hamburger-btn:hover{ border-color:var(--orange-light); background:var(--peach); transform:none; }
 .hamburger-btn span{
   display:block; width:20px; height:2.5px; border-radius:2px;
   background:var(--ink);
