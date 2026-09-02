@@ -65,10 +65,7 @@
 
 </main>
 
-<footer>
-  Fareless — built for people who take more than one way to work.
-  <br>© 2026 Fareless. All rights reserved.
-</footer>
+<div id="footer-container"></div>
 
 <!--<script type="module" src="index_script.js"></script> -->
 
@@ -187,6 +184,10 @@
   document.addEventListener('click', (e) => { if (!e.target.closest('.menu-wrap')) closeMenu() })
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu() })
 </script>
+  
+<!-- GET HEADER AND FOOTER -->
 <script src="assets/components/header.js"></script>
+<script src="assets/components/footer.js"></script>
+
 </body>
 </html>
