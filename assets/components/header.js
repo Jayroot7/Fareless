@@ -23,10 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
             <span></span>
           </button>
           <nav class="dropdown-menu" id="dropdown-menu">
-            <a href="${pathPrefix}calculator/calculator.html">Tourist Calculator</a>
-            <a href="${pathPrefix}travel_info/Edinburgh.html">Edinburgh Travel</a>
+            <a href="${pathPrefix}pages/travel_calculator/">Tourist Calculator</a>
+            <a href="${pathPrefix}pages/travel_info/">Travel Tips</a>
             <div class="divider-line"></div>
-            <a href="https://fareless.app/login/login">Portal Login</a>
+            <a href="${pathPrefix}pages/login/">Portal Login</a>
           </nav>
         </div>
       </div>
