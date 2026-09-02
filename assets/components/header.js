@@ -2,9 +2,31 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('header-container');
   if (!container) return;
-
+  
+  // --- AUTOMATIC PATH CALCULATION ---
+  // 1. Get container attribute if defined, otherwise calculate automatically
   // Handles relative routing when nested in subfolders
-  const pathPrefix = container.dataset.pathPrefix || '';
+ let pathPrefix = container.dataset.pathPrefix;
+
+  if (pathPrefix === undefined) {
+    // Determine depth by counting directories inside pathname
+    const pathSegments = window.location.pathname.split('/').filter(Boolean);
+    
+    // Check if hosted on GitHub Pages Project site (username.github.io/repo-name/)
+    const isGitHubPages = window.location.hostname.endsWith('github.io');
+    
+    // Ignore repo name in segment count if on GH Pages
+    const relevantSegments = isGitHubPages ? pathSegments.slice(1) : pathSegments;
+    
+    // Exclude 'index.html' if present at the end of URL
+    if (relevantSegments.length > 0 && relevantSegments[relevantSegments.length - 1].includes('.')) {
+      relevantSegments.pop();
+    }
+
+    // Number of steps back to root (e.g. pages/travel_calculator = 2 steps = ../../)
+    const depth = relevantSegments.length;
+    pathPrefix = depth > 0 ? '../'.repeat(depth) : './';
+  }
 
   // 1. Inject Header HTML Markup
   container.innerHTML = `
