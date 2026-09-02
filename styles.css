@@ -45,7 +45,7 @@ header{
 }
 
 .logo{
-  font-family:'Fredoka', sans-serif;
+  font-family:'Raleway', sans-serif;
   font-weight:600;
   font-size:1.4rem;
   letter-spacing:-0.02em;
@@ -58,11 +58,13 @@ header{
   box-shadow:0 0 0 5px var(--peach);
 }
 
-.logo-link {
-color: inherit;
-text-decoration: none;
-cursor: default;
-}
+.logo-link{
+    color:inherit;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
 
 .header-right{
   display:flex;
@@ -258,7 +260,7 @@ input:disabled{
 }
 
 button{
-  font-family:'Fredoka', sans-serif;
+  font-family:'Raleway', sans-serif;
   font-weight:600;
   font-size:0.96rem;
   color:var(--white);
@@ -336,7 +338,7 @@ button:disabled{ background:#3FAE6B; cursor:default; transform:none; }
   opacity:0.75;
 }
 .badge-text .store-name{
-  font-family:'Fredoka', sans-serif;
+  font-family:'Raleway', sans-serif;
   font-size:0.9rem;
   font-weight:600;
 }
