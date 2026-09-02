@@ -226,7 +226,7 @@ h1 .accent{ color:var(--orange); }
 }
 
 form{
-  display:flex;
+  display:center;
   gap:10px;
   max-width:420px;
   margin:0 auto;
