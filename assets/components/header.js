@@ -1,0 +1,65 @@
+// assets/components/header.js
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('header-container');
+  if (!container) return;
+
+  // Handles relative routing when nested in subfolders
+  const pathPrefix = container.dataset.pathPrefix || '';
+
+  // 1. Inject Header HTML Markup
+  container.innerHTML = `
+    <header>
+      <div class="logo">
+        <a href="https://fareless.app" class="logo-link">
+          <span class="dot"></span>Fareless
+        </a>
+      </div>
+
+      <div class="header-right">
+        <div class="menu-wrap">
+          <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <nav class="dropdown-menu" id="dropdown-menu">
+            <a href="${pathPrefix}calculator/calculator.html">Tourist Calculator</a>
+            <a href="${pathPrefix}travel_info/Edinburgh.html">Edinburgh Travel</a>
+            <div class="divider-line"></div>
+            <a href="https://fareless.app/login/login">Portal Login</a>
+          </nav>
+        </div>
+      </div>
+    </header>
+  `;
+
+  // 2. Attach Self-Contained Menu Interactivity
+  const hamburgerBtn = document.getElementById('hamburger-btn');
+  const dropdownMenu = document.getElementById('dropdown-menu');
+
+  if (!hamburgerBtn || !dropdownMenu) return;
+
+  function closeMenu() {
+    hamburgerBtn.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    dropdownMenu.classList.remove('show');
+  }
+
+  // Toggle dropdown menu
+  hamburgerBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const isOpen = dropdownMenu.classList.toggle('show');
+    hamburgerBtn.classList.toggle('open', isOpen);
+    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  // Close when clicking outside menu wrapper
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.menu-wrap')) closeMenu();
+  });
+
+  // Close when pressing Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+});
