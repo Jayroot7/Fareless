@@ -6,8 +6,8 @@ Repository Site
 ├── assets
 │   │
 │	├── components
-│	│   ├── header.html
-│	│	└── footer.html
+│	│   ├── header.js
+│	│	└── footer.js
 │	│
 │   ├── css
 │   │   ├── components.css
@@ -16,7 +16,6 @@ Repository Site
 │   │
 │   ├── js
 │   │   ├── auth.js
-│   │   ├── navigation.js
 │   │   ├── supabase.js
 │   │   ├── utils.js
 │   │   └── load-components.js
