@@ -166,49 +166,10 @@
       hideTimer = setTimeout(function(){ badge.classList.remove('show-tip'); }, 1800);
     });
   });
-  
-  // ---------- Hamburger menu ----------
-  const hamburgerBtn = document.getElementById('hamburger-btn')
-  const dropdownMenu = document.getElementById('dropdown-menu')
-  function closeMenu() {
-    hamburgerBtn.classList.remove('open')
-    hamburgerBtn.setAttribute('aria-expanded', 'false')
-    dropdownMenu.classList.remove('show')
-  }
-  hamburgerBtn.addEventListener('click', (e) => {
-    e.stopPropagation()
-    const isOpen = dropdownMenu.classList.toggle('show')
-    hamburgerBtn.classList.toggle('open', isOpen)
-    hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
-  })
-  document.addEventListener('click', (e) => { if (!e.target.closest('.menu-wrap')) closeMenu() })
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu() })
-</script>
-  
-<!-- GET HEADER AND FOOTER -->
-<script>
-  fetch('assets/components/header.html')
-    .then(response => {
-      if (!response.ok) throw new Error('Failed to load header');
-      return response.text();
-    })
-    .then(data => {
-      document.getElementById('header-container').innerHTML = data;
-    })
-    .catch(error => console.error('Error loading header:', error));
-</script>
+  </script>
 
-<script>
-  fetch('assets/components/footer.html')
-    .then(response => {
-      if (!response.ok) throw new Error('Failed to load footer');
-      return response.text();
-    })
-    .then(data => {
-      document.getElementById('footer-container').innerHTML = data;
-    })
-    .catch(error => console.error('Error loading footer:', error));
-</script>
-  
+ <script src="../assets/components/header.js"></script>
+<script src="../assets/components/footer.js"></script>
+
 </body>
 </html>
