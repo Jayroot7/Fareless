@@ -1,1 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fareless — Edinburgh Tram &amp; Bus Pass Calculator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange: #FF5A1F;
+    --orange-dark: #E8470F;
+    --orange-light: #FF8C42;
+    --peach: #FFF1E6;
+    --ink: #191512;
+    --ink-soft: #6B6259;
+    --white: #FFFFFF;
+    --line: #F0E3D8;
+    --green: #2E9A57;
+    --green-bg: #EAF7EF;
+    --shadow: 0 20px 40px -20px rgba(232, 71, 15, 0.35);
+  }
 
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:0.35;
+    z-index:0;
+    pointer-events:none;
+  }
+  .blob-1{ width:480px; height:480px; background:var(--orange-light); top:-180px; right:-160px; }
+  .blob-2{ width:360px; height:360px; background:var(--peach); bottom:-140px; left:-120px; opacity:0.9; }
+
+  header{
+    position:relative; z-index:2;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 28px 6vw;
+  }
+  .logo{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.4rem;
+    letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:8px;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  .logo .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--orange);
+    display:inline-block;
+    box-shadow:0 0 0 5px var(--peach);
+  }
+
+  .logo-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: default;
+  }
+  
+  .nav-badge{
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--orange-dark);
+    background:var(--peach);
+    padding:8px 16px;
+    border-radius:999px;
+    letter-spacing:0.02em;
+  }
+
+  main{
+    position:relative; z-index:2;
+    max-width:760px;
+    margin:0 auto;
+    padding: 2vh 6vw 10vh;
+  }
+
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.8rem; font-weight:700;
+    color:var(--orange-dark);
+    background:var(--white);
+    border:1.5px solid var(--orange-light);
+    padding:7px 16px;
+    border-radius:999px;
+    margin-bottom:22px;
+  }
+
+  h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:700;
+    font-size:clamp(2rem, 5vw, 2.9rem);
+    line-height:1.08;
+    letter-spacing:-0.02em;
+    margin-bottom:14px;
+  }
+  h1 .accent{ color:var(--orange); }
+
+  .subhead{
+    font-size:1.02rem;
+    color:var(--ink-soft);
+    line-height:1.6;
+    max-width:560px;
+    margin-bottom:38px;
+  }
+
+  .card{
+    background:var(--white);
+    border:1.5px solid var(--line);
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:24px;
+  }
+
+  .field-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .field{ display:flex; flex-direction:column; gap:8px; }
+  .field.full{ grid-column:1 / -1; }
+  .field label{
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .field .hint{
+    font-size:0.74rem;
+    color:var(--ink-soft);
+    font-weight:400;
+  }
+  input[type="number"], select{
+    padding:13px 14px;
+    border-radius:12px;
+    border:2px solid var(--line);
+    font-family:'Inter', sans-serif;
+    font-size:0.95rem;
+    outline:none;
+    background:var(--white);
+    color:var(--ink);
+    transition: border-color .2s ease, box-shadow .2s ease;
+    width:100%;
+  }
+  input[type="number"]:focus, select:focus{
+    border-color:var(--orange);
+    box-shadow:0 0 0 4px rgba(255,90,31,0.12);
+  }
+
+  .toggle-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .toggle-btn{
+    flex:1;
+    min-width:100px;
+    padding:12px 10px;
+    border-radius:12px;
+    border:2px solid var(--line);
+    background:var(--white);
+    color:var(--ink-soft);
+    font-family:'Inter', sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    cursor:pointer;
+    text-align:center;
+    transition: all .15s ease;
+  }
+  .toggle-btn.active{
+    border-color:var(--orange);
+    background:var(--peach);
+    color:var(--orange-dark);
+  }
+
+  .calc-btn{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    color:var(--white);
+    background:var(--orange);
+    border:none;
+    padding:16px 26px;
+    border-radius:14px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition: transform .15s ease, background .2s ease;
+    width:100%;
+    margin-top:26px;
+  }
+  .calc-btn:hover{ background:var(--orange-dark); transform:translateY(-2px); }
+  .calc-btn:active{ transform:translateY(0); }
+
+  #results{ display:none; }
+
+  .best-banner{
+    background:var(--green-bg);
+    border:1.5px solid #B9E6C6;
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:20px;
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .best-banner .icon{ font-size:1.8rem; }
+  .best-banner .title{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    color:var(--green);
+    margin-bottom:2px;
+  }
+  .best-banner .sub{
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+
+  .option{
+    border:1.5px solid var(--line);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-bottom:14px;
+    position:relative;
+  }
+  .option.winner{
+    border-color:var(--green);
+    box-shadow:0 0 0 3px rgba(46,154,87,0.12);
+  }
+  .option-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .option-name{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.02rem;
+  }
+  .option-price{
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:1.25rem;
+    color:var(--orange-dark);
+    white-space:nowrap;
+  }
+  .option-price.disabled{ color:var(--ink-soft); font-size:0.95rem; font-weight:600; }
+  .badge-win{
+    display:inline-block;
+    font-size:0.68rem;
+    font-weight:700;
+    color:var(--white);
+    background:var(--green);
+    padding:3px 9px;
+    border-radius:999px;
+    margin-bottom:8px;
+    letter-spacing:0.03em;
+  }
+  .option-breakdown{
+    font-family:'JetBrains Mono', monospace;
+    font-size:0.78rem;
+    color:var(--ink-soft);
+    line-height:1.7;
+    background:var(--peach);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-top:8px;
+  }
+  .option-note{
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-top:8px;
+    line-height:1.5;
+  }
+
+  .assumptions{
+    background:var(--peach);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-top:26px;
+  }
+  .assumptions h3{
+    font-family:'Fredoka', sans-serif;
+    font-size:0.95rem;
+    margin-bottom:10px;
+    color:var(--orange-dark);
+  }
+  .assumptions ul{
+    padding-left:18px;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    line-height:1.7;
+  }
+
+  footer{
+    position:relative; z-index:2;
+    text-align:center;
+    padding:28px 6vw 40px;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+  }
+  footer a{ color:var(--orange-dark); text-decoration:none; font-weight:600; }
+
+  @media (max-width:560px){
+    .field-grid{ grid-template-columns:1fr; }
+    .option-head{ flex-direction:column; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<header>
+<div class="logo">
+  <a href="https://fareless.app" class="logo-link">
+    <span class="dot"></span>Fareless
+  </a>
+</div>
+
+  <div class="nav-badge">Edinburgh trip tool</div>
+</header>
+
+<main>
+  <span class="eyebrow">🚊 Visiting Edinburgh?</span>
+  <h1>Should you buy a <span class="accent">tram &amp; bus pass?</span></h1>
+  <p class="subhead">
+    Tell us about your trip and we'll compare pay‑as‑you‑go fares against day passes,
+    multi‑day tickets and family tickets — so you know exactly which one saves you money.
+  </p>
+
+  <div class="card">
+    <div class="field-grid">
+      <div class="field">
+        <label for="adults">Adults</label>
+        <input type="number" id="adults" min="1" value="2">
+      </div>
+      <div class="field">
+        <label for="children">Children</label>
+        <input type="number" id="children" min="0" value="0">
+      </div>
+      <div class="field">
+        <label for="days">Days in Edinburgh</label>
+        <input type="number" id="days" min="1" value="3">
+      </div>
+      <div class="field">
+        <label for="trips">Trips per day</label>
+        <select id="trips">
+          <option value="2">Casual — 1–2 trips/day</option>
+          <option value="4" selected>Regular — 3–4 trips/day</option>
+          <option value="6">Explorer — 5+ trips/day</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Where will you mostly travel?</label>
+        <select id="zone">
+          <option value="trams">City Centre — Trams only</option>
+          <option value="citybus" selected>City Centre — Buses &amp; Trams</option>
+          <option value="regional">City + Regional (Outer Lothian)</option>
+        </select>
+      </div>
+      <div class="field full">
+        <label>Airport travel needed?</label>
+        <div class="toggle-row" id="airportToggle">
+          <button type="button" class="toggle-btn active" data-value="none">Not needed</button>
+          <button type="button" class="toggle-btn" data-value="oneway">One‑way</button>
+          <button type="button" class="toggle-btn" data-value="return">Return</button>
+        </div>
+      </div>
+    </div>
+    <button class="calc-btn" id="calcBtn">Compare my options</button>
+  </div>
+
+  <div id="results"></div>
+</main>
+
+<footer>
+  Ticket prices from the current Lothian Buses &amp; Edinburgh Trams rate card. Always double‑check live prices before you travel.
+  <br>© 2026 Fareless. All rights reserved. · <a href="index.html">Back to Fareless</a>
+</footer>
+
+<script>
+  // ---- Fare data (from current rate card) ----
+  const SINGLE_FARE = 2.40;
+  const DAILY_CAP = 5.70;      // Tap Tap contactless daily cap
+  const WEEKLY_CAP = 26.50;    // Tap Tap contactless weekly cap
+
+  const FAMILY = {
+    dayTripperTram: 10.50,   // trams only, city zone
+    daysTicket: 13.00,       // buses & trams, city zone
+    cityCountryDay: 22.00,   // full combined network (buses only)
+    airportOpenReturn: 28.00 // trams, family, covers airport <-> city
+  };
+  const TRAM_BUNDLES = [ [1, 10.50], [3, 28.00], [4, 35.00], [5, 43.00] ];
+
+  const AIRPORT = {
+    airlinkSingle: 5.50,
+    tramSingle: 7.50,
+    airlinkReturn: 8.00,
+    tramReturn: 9.50,
+    networkDay: 14.00 // per person, unlimited airport bus/tram + city routes, 1 day
+  };
+
+  const FAMILY_MAX_ADULTS = 2;
+  const FAMILY_MAX_CHILDREN = 3;
+
+  const fmt = n => '£' + n.toFixed(2);
+
+  // Toggle buttons
+  let airportChoice = 'none';
+  document.getElementById('airportToggle').addEventListener('click', e => {
+    const btn = e.target.closest('.toggle-btn');
+    if (!btn) return;
+    document.querySelectorAll('#airportToggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    airportChoice = btn.dataset.value;
+  });
+
+  function weeklyCapCost(dailyCost, days){
+    const fullWeeks = Math.floor(days / 7);
+    const remDays = days % 7;
+    const weekCost = Math.min(dailyCost * 7, WEEKLY_CAP);
+    const remCost = Math.min(dailyCost * remDays, WEEKLY_CAP);
+    return fullWeeks * weekCost + remCost;
+  }
+
+  // Cheapest way to cover >= `days` using the tram day/multi-day bundles
+  function tramBundleCost(days){
+    const maxDay = days + 4;
+    const dp = new Array(maxDay + 1).fill(Infinity);
+    dp[0] = 0;
+    for (let d = 1; d <= maxDay; d++){
+      for (const [len, price] of TRAM_BUNDLES){
+        if (d - len >= 0 && dp[d - len] + price < dp[d]) dp[d] = dp[d - len] + price;
+      }
+    }
+    let best = Infinity;
+    for (let d = days; d <= maxDay; d++) best = Math.min(best, dp[d]);
+    return best;
+  }
+
+  function calculate(){
+    const adults = Math.max(1, parseInt(document.getElementById('adults').value) || 1);
+    const children = Math.max(0, parseInt(document.getElementById('children').value) || 0);
+    const days = Math.max(1, parseInt(document.getElementById('days').value) || 1);
+    const tripsPerDay = parseInt(document.getElementById('trips').value);
+    const zone = document.getElementById('zone').value;
+    const pax = adults + children;
+    const isFamily = adults <= FAMILY_MAX_ADULTS && children <= FAMILY_MAX_CHILDREN;
+
+    // ---- Option A: Pay As You Go (Tap Tap) ----
+    const eligibleAdults = Math.min(adults, 2);
+    const extraAdults = Math.max(adults - 2, 0);
+    const dailyCostEligible = Math.min(tripsPerDay * SINGLE_FARE, DAILY_CAP);
+    const costEligibleAdults = weeklyCapCost(dailyCostEligible, days) * eligibleAdults;
+    const costExtraAdults = extraAdults * tripsPerDay * SINGLE_FARE * days;
+    const costChildren = children * tripsPerDay * SINGLE_FARE * days;
+
+    let airportPAYG = 0;
+    if (airportChoice === 'oneway') airportPAYG = pax * AIRPORT.airlinkSingle;
+    if (airportChoice === 'return') airportPAYG = pax * AIRPORT.airlinkReturn;
+
+    const paygTotal = costEligibleAdults + costExtraAdults + costChildren + airportPAYG;
+
+    const paygBreakdown = [
+      `Tap Tap (up to 2 adults, capped): ${fmt(costEligibleAdults)}`,
+      extraAdults > 0 ? `Extra adults (uncapped singles): ${fmt(costExtraAdults)}` : null,
+      children > 0 ? `Children (singles, est.): ${fmt(costChildren)}` : null,
+      airportChoice !== 'none' ? `Airport Airlink bus × ${pax}: ${fmt(airportPAYG)}` : null
+    ].filter(Boolean);
+
+    // ---- Option B: Best pass for your group ----
+    let passOption = null;
+    if (isFamily){
+      let passCost, passLabel;
+      if (zone === 'trams'){
+        passCost = tramBundleCost(days);
+        passLabel = `Family tram ticket(s) covering ${days} day${days>1?'s':''}`;
+      } else if (zone === 'citybus'){
+        passCost = FAMILY.daysTicket * days;
+        passLabel = `Family DAYticket (Buses & Trams) × ${days}`;
+      } else {
+        passCost = FAMILY.cityCountryDay * days;
+        passLabel = `City & Country DAY (Family) × ${days}`;
+      }
+      let airportAdd = 0;
+      let airportNote = null;
+      if (airportChoice !== 'none'){
+        airportAdd = FAMILY.airportOpenReturn;
+        airportNote = `+ Family Airport Open Return (covers travel either/both directions): ${fmt(airportAdd)}`;
+      }
+      const total = passCost + airportAdd;
+      passOption = {
+        name: 'Family pass for your group',
+        total,
+        breakdown: [`${passLabel}: ${fmt(passCost)}`, airportNote].filter(Boolean),
+        note: 'One pass covers up to 2 adults + 3 children — no need to buy separately per person.'
+      };
+    }
+
+    // ---- Option C: Network Day Ticket (per person) ----
+    const networkCost = AIRPORT.networkDay * pax * days;
+    const networkOption = {
+      name: 'Network Day Ticket (per person)',
+      total: networkCost,
+      breakdown: [`${fmt(AIRPORT.networkDay)} × ${pax} people × ${days} day${days>1?'s':''}: ${fmt(networkCost)}`],
+      note: 'Unlimited airport buses, trams and city routes each day — good for larger groups or heavy airport use. Regional Outer Lothian routes may need an extra ticket.'
+    };
+
+    const paygOption = {
+      name: 'Pay As You Go (Tap Tap contactless)',
+      total: paygTotal,
+      breakdown: paygBreakdown,
+      note: 'Tap the same contactless card each trip — fares cap automatically per adult. Best for light, unpredictable travel.'
+    };
+
+    const options = [paygOption, networkOption];
+    if (passOption) options.push(passOption);
+    options.sort((a, b) => a.total - b.total);
+
+    renderResults(options, isFamily, adults, children);
+  }
+
+  function renderResults(options, isFamily, adults, children){
+    const container = document.getElementById('results');
+    const winner = options[0];
+    const runnerUp = options[1];
+    const savings = runnerUp.total - winner.total;
+
+    let html = `
+      <div class="best-banner">
+        <div class="icon">🎉</div>
+        <div>
+          <div class="title">${winner.name} is your cheapest option — ${fmt(winner.total)}</div>
+          <div class="sub">That's ${fmt(savings)} less than the next best option (${runnerUp.name}, ${fmt(runnerUp.total)}).</div>
+        </div>
+      </div>
+    `;
+
+    options.forEach((opt, i) => {
+      html += `
+        <div class="option ${i === 0 ? 'winner' : ''}">
+          ${i === 0 ? '<span class="badge-win">CHEAPEST</span>' : ''}
+          <div class="option-head">
+            <div class="option-name">${opt.name}</div>
+            <div class="option-price">${fmt(opt.total)}</div>
+          </div>
+          <div class="option-breakdown">${opt.breakdown.join('<br>')}</div>
+          <div class="option-note">${opt.note}</div>
+        </div>
+      `;
+    });
+
+    if (!isFamily){
+      html += `
+        <div class="option">
+          <div class="option-head">
+            <div class="option-name">Family passes</div>
+            <div class="option-price disabled">Not available</div>
+          </div>
+          <div class="option-note">Family tickets cover up to ${FAMILY_MAX_ADULTS_LABEL()}. With ${adults} adult${adults>1?'s':''} and ${children} child${children===1?'':'ren'}, compare Pay As You Go against the Network Day Ticket above, or split into smaller family groups.</div>
+        </div>
+      `;
+    }
+
+    html += `
+      <div class="assumptions">
+        <h3>Assumptions we made</h3>
+        <ul>
+          <li>Child fares aren't listed on the current rate card, so children's single trips are estimated at the standard adult single fare (£2.40). Check with Lothian Buses for confirmed child pricing.</li>
+          <li>Tap Tap daily/weekly capping is shown for solo travellers or parties of up to 2 adults tapping the same card each trip; larger adult groups and children are priced at standard uncapped singles above.</li>
+          <li>Family tickets are assumed to cover up to 2 adults + 3 children, in line with standard family ticket terms — confirm current terms before buying.</li>
+          <li>The Family Airport Open Return is a single ticket that covers travel in either or both directions, so it's used whether you selected one‑way or return.</li>
+        </ul>
+      </div>
+    `;
+
+    container.innerHTML = html;
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function FAMILY_MAX_ADULTS_LABEL(){
+    return `${FAMILY_MAX_ADULTS} adults + ${FAMILY_MAX_CHILDREN} children`;
+  }
+
+  document.getElementById('calcBtn').addEventListener('click', calculate);
+</script>
+
+</body>
+</html>
