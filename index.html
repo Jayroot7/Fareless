@@ -186,8 +186,29 @@
 </script>
   
 <!-- GET HEADER AND FOOTER -->
-<script src="assets/components/header.js"></script>
-<script src="assets/components/footer.js"></script>
+<script>
+  fetch('assets/components/header.html')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to load header');
+      return response.text();
+    })
+    .then(data => {
+      document.getElementById('header-container').innerHTML = data;
+    })
+    .catch(error => console.error('Error loading header:', error));
+</script>
 
+<script>
+  fetch('assets/components/footer.html')
+    .then(response => {
+      if (!response.ok) throw new Error('Failed to load footer');
+      return response.text();
+    })
+    .then(data => {
+      document.getElementById('footer-container').innerHTML = data;
+    })
+    .catch(error => console.error('Error loading footer:', error));
+</script>
+  
 </body>
 </html>
