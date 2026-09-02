@@ -1,1 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log in — Fareless</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange: #FF5A1F;
+    --orange-dark: #E8470F;
+    --orange-light: #FF8C42;
+    --peach: #FFF1E6;
+    --ink: #191512;
+    --ink-soft: #6B6259;
+    --white: #FFFFFF;
+    --line: #F0E3D8;
+    --shadow: 0 20px 40px -20px rgba(232, 71, 15, 0.35);
+    --error: #E8470F;
+    --success: #2E9A57;
+  }
 
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    background:var(--white);
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(70px);
+    opacity:0.35;
+    z-index:0;
+    pointer-events:none;
+  }
+  .blob-1{ width:480px; height:480px; background:var(--orange-light); top:-180px; right:-160px; }
+  .blob-2{ width:360px; height:360px; background:var(--peach); bottom:-140px; left:-120px; opacity:0.9; }
+
+  header{
+    position:relative; z-index:2;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 28px 6vw;
+  }
+  .logo{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1.4rem;
+    letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--orange);
+    display:inline-block;
+    box-shadow:0 0 0 5px var(--peach);
+  }
+  .logo-link{
+    color:inherit;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .nav-badge{
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--orange-dark);
+    background:var(--peach);
+    padding:8px 16px;
+    border-radius:999px;
+    letter-spacing:0.02em;
+  }
+
+  main{
+    position:relative; z-index:2;
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 2vh 6vw 6vh;
+  }
+
+  .login-card{
+    width:100%;
+    max-width:400px;
+    background:var(--white);
+    border:1.5px solid var(--line);
+    border-radius:24px;
+    box-shadow: 0 30px 60px -30px rgba(25,21,18,0.18);
+    padding:40px 34px 34px;
+  }
+
+  .card-head{
+    text-align:center;
+    margin-bottom:30px;
+  }
+  .card-head .eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-size:0.76rem; font-weight:700;
+    color:var(--orange-dark);
+    background:var(--peach);
+    border:1.5px solid var(--orange-light);
+    padding:6px 14px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .card-head h1{
+    font-family:'Fredoka', sans-serif;
+    font-weight:700;
+    font-size:1.7rem;
+    letter-spacing:-0.02em;
+    margin-bottom:8px;
+  }
+  .card-head p{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    line-height:1.5;
+  }
+
+  .field{
+    margin-bottom:16px;
+  }
+  .field label{
+    display:block;
+    font-size:0.8rem;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:6px;
+  }
+  .input-wrap{
+    position:relative;
+  }
+  input{
+    width:100%;
+    padding:14px 16px;
+    border-radius:14px;
+    border:2px solid var(--line);
+    font-family:'Inter', sans-serif;
+    font-size:0.95rem;
+    outline:none;
+    background:var(--white);
+    color:var(--ink);
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  input::placeholder{ color:#B8ADA1; }
+  input:focus{
+    border-color:var(--orange);
+    box-shadow:0 0 0 4px rgba(255,90,31,0.12);
+  }
+  input.error{
+    border-color:var(--error);
+    animation: shake .4s ease;
+  }
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-6px); }
+    75%{ transform:translateX(6px); }
+  }
+
+  .password-wrap input{ padding-right:46px; }
+  .toggle-pw{
+    position:absolute;
+    right:6px;
+    top:50%;
+    transform:translateY(-50%);
+    background:none;
+    border:none;
+    box-shadow:none;
+    padding:8px;
+    cursor:pointer;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:8px;
+    transition: color .15s ease, background .15s ease;
+  }
+  .toggle-pw:hover{ color:var(--orange-dark); background:var(--peach); transform:translateY(-50%); }
+  .toggle-pw svg{ width:19px; height:19px; }
+
+  .row-between{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:22px;
+    font-size:0.82rem;
+  }
+  .remember{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:var(--ink-soft);
+    cursor:pointer;
+    user-select:none;
+  }
+  .remember input[type="checkbox"]{
+    width:15px; height:15px;
+    padding:0;
+    margin:0;
+    accent-color:var(--orange);
+    cursor:pointer;
+  }
+  .forgot-link{
+    color:var(--orange-dark);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .forgot-link:hover{ text-decoration:underline; }
+
+  button.submit-btn{
+    width:100%;
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:0.98rem;
+    color:var(--white);
+    background:var(--orange);
+    border:none;
+    padding:15px 26px;
+    border-radius:14px;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+    transition: transform .15s ease, background .2s ease;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+  }
+  button.submit-btn:hover{ background:var(--orange-dark); transform:translateY(-2px); }
+  button.submit-btn:active{ transform:translateY(0); }
+  button.submit-btn:disabled{
+    background:#D9B8A8;
+    cursor:default;
+    transform:none;
+    box-shadow:none;
+  }
+
+  .spinner{
+    width:16px; height:16px;
+    border-radius:50%;
+    border:2.5px solid rgba(255,255,255,0.45);
+    border-top-color:var(--white);
+    animation: spin .7s linear infinite;
+    display:none;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  button.submit-btn.loading .spinner{ display:inline-block; }
+  button.submit-btn.loading .btn-label{ opacity:0.85; }
+
+  #message{
+    margin-top:16px;
+    font-size:0.85rem;
+    font-weight:600;
+    text-align:center;
+    min-height:18px;
+    color:var(--error);
+  }
+  #message.success{ color:var(--success); }
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:26px 0 20px;
+    color:var(--ink-soft);
+    font-size:0.76rem;
+    font-weight:600;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+  }
+  .divider::before, .divider::after{
+    content:'';
+    flex:1;
+    height:1px;
+    background:var(--line);
+  }
+
+  .signup-note{
+    text-align:center;
+    font-size:0.88rem;
+    color:var(--ink-soft);
+  }
+  .signup-note a{
+    color:var(--orange-dark);
+    text-decoration:none;
+    font-weight:600;
+  }
+  .signup-note a:hover{ text-decoration:underline; }
+
+  footer{
+    position:relative; z-index:2;
+    text-align:center;
+    padding:20px 6vw 32px;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+  }
+  footer a{ color:var(--orange-dark); text-decoration:none; font-weight:600; }
+
+  @media (max-width:460px){
+    .login-card{ padding:32px 24px 28px; border-radius:20px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .spinner{ animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<header>
+  <a href="https://fareless.app" class="logo-link">
+    <span class="logo"><span class="dot"></span>Fareless</span>
+  </a>
+  <div class="nav-badge">Beta opens soon</div>
+</header>
+
+<main>
+  <div class="login-card">
+    <div class="card-head">
+      <span class="eyebrow">🔒 Welcome back</span>
+      <h1>Log in to Fareless</h1>
+      <p>Pick up right where you left off — your commute costs, tracked and waiting.</p>
+    </div>
+
+    <form id="login-form" novalidate>
+      <div class="field">
+        <label for="email">Email</label>
+        <div class="input-wrap">
+          <input type="email" id="email" placeholder="you@email.com" autocomplete="email" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="input-wrap password-wrap">
+          <input type="password" id="password" placeholder="Enter your password" autocomplete="current-password" required>
+          <button type="button" class="toggle-pw" id="toggle-pw" aria-label="Show password">
+            <svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="row-between">
+        <label class="remember">
+          <input type="checkbox" id="remember">
+          Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submit-btn">
+        <span class="spinner"></span>
+        <span class="btn-label">Log in</span>
+      </button>
+
+      <div id="message"></div>
+    </form>
+
+    <div class="divider">New here</div>
+    <p class="signup-note">Don't have an account? <a href="fareless.com">Join the waitlist</a></p>
+  </div>
+</main>
+
+<footer>
+  Fareless — built for people who take more than one way to work.
+  <br>© 2026 Fareless. All rights reserved.
+</footer>
+
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js'
+
+const supabaseUrl = 'https://tjtccacswjvmpcsczosd.supabase.co'
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRqdGNjYWNzd2p2bXBjc2N6b3NkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYxMzA5NzYsImV4cCI6MjEwMTcwNjk3Nn0.VhF0imXq1wQ0kpJnI9w1rwJeMkKmlmjQeC25W31vbtc'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+const form = document.getElementById('login-form')
+const emailInput = document.getElementById('email')
+const passwordInput = document.getElementById('password')
+const submitBtn = document.getElementById('submit-btn')
+const message = document.getElementById('message')
+const togglePw = document.getElementById('toggle-pw')
+const eyeIcon = document.getElementById('eye-icon')
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+// Show/hide password
+togglePw.addEventListener('click', function () {
+  const isPassword = passwordInput.type === 'password'
+  passwordInput.type = isPassword ? 'text' : 'password'
+  togglePw.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password')
+  eyeIcon.innerHTML = isPassword
+    ? '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a20.77 20.77 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a20.8 20.8 0 0 1-3.22 4.4M14.12 14.12a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>'
+})
+
+function clearFieldErrors() {
+  emailInput.classList.remove('error')
+  passwordInput.classList.remove('error')
+}
+
+emailInput.addEventListener('input', () => { clearFieldErrors(); message.textContent = '' })
+passwordInput.addEventListener('input', () => { clearFieldErrors(); message.textContent = '' })
+
+form.addEventListener('submit', async function (e) {
+  e.preventDefault()
+  clearFieldErrors()
+  message.textContent = ''
+  message.className = ''
+
+  const email = emailInput.value.trim()
+  const password = passwordInput.value
+
+  if (!emailPattern.test(email)) {
+    emailInput.classList.add('error')
+    message.textContent = "That doesn't look like a valid email — try again."
+    return
+  }
+  if (!password) {
+    passwordInput.classList.add('error')
+    message.textContent = 'Enter your password to continue.'
+    return
+  }
+
+  submitBtn.disabled = true
+  submitBtn.classList.add('loading')
+
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+  submitBtn.disabled = false
+  submitBtn.classList.remove('loading')
+
+  if (error) {
+    emailInput.classList.add('error')
+    passwordInput.classList.add('error')
+    message.textContent = error.message
+    return
+  }
+
+  message.className = 'success'
+  message.textContent = "You're in — redirecting..."
+  setTimeout(() => { window.location.href = '/portal/dashboard.html' }, 500)
+})
+</script>
+
+</body>
+</html>
