@@ -8,10 +8,11 @@
   --white: #FFFFFF;
   --line: #F0E3D8;
   --shadow: 0 20px 40px -20px rgba(232, 71, 15, 0.35);
+  --error: #E8470F;
+  --success: #2E9A57;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; }
-
 html { scroll-behavior:smooth; }
 
 body{
@@ -21,6 +22,8 @@ body{
   min-height:100vh;
   overflow-x:hidden;
   position:relative;
+  display:flex;
+  flex-direction:column;
 }
 
 /* Ambient blobs */
