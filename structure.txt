@@ -18,7 +18,8 @@ Repository Site
 │   │   ├── auth.js
 │   │   ├── navigation.js
 │   │   ├── supabase.js
-│   │   └── utils.js
+│   │   ├── utils.js
+│   │   └── load-components.js
 │   │
 │   ├── icons
 │   │
