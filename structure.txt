@@ -5,6 +5,10 @@ Repository Site
 │
 ├── assets
 │   │
+│	├── components
+│	│   ├── header.html
+│	│	└── footer.html
+│	│
 │   ├── css
 │   │   ├── components.css
 │   │   ├── layout.css
