@@ -8,65 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --orange: #FF5A1F;
-    --orange-dark: #E8470F;
-    --orange-light: #FF8C42;
-    --peach: #FFF1E6;
-    --ink: #191512;
-    --ink-soft: #6B6259;
-    --white: #FFFFFF;
-    --line: #F0E3D8;
-    --shadow: 0 20px 40px -20px rgba(232, 71, 15, 0.35);
-    --error: #E8470F;
-    --success: #2E9A57;
-  }
-
-  * { margin:0; padding:0; box-sizing:border-box; }
-  html { scroll-behavior:smooth; }
-
-  body{
-    font-family:'Inter', sans-serif;
-    color:var(--ink);
-    background:var(--white);
-    min-height:100vh;
-    overflow-x:hidden;
-    position:relative;
-  }
-
-  .blob{
-    position:fixed;
-    border-radius:50%;
-    filter:blur(70px);
-    opacity:0.3;
-    z-index:0;
-    pointer-events:none;
-  }
-  .blob-1{ width:480px; height:480px; background:var(--orange-light); top:-200px; right:-160px; }
-  .blob-2{ width:360px; height:360px; background:var(--peach); bottom:-160px; left:-140px; opacity:0.8; }
-
-  header{
-    position:relative; z-index:20;
-    display:flex; align-items:center; justify-content:space-between;
-    padding: 24px 6vw;
-  }
-  .logo{
-    font-family:'Fredoka', sans-serif;
-    font-weight:600;
-    font-size:1.4rem;
-    letter-spacing:-0.02em;
-    display:flex; align-items:center; gap:8px;
-  }
-  .logo .dot{
-    width:9px; height:9px; border-radius:50%;
-    background:var(--orange);
-    display:inline-block;
-    box-shadow:0 0 0 5px var(--peach);
-  }
-  .logo-link{ color:inherit; text-decoration:none; display:flex; align-items:center; gap:8px; }
-
-  .header-right{ display:flex; align-items:center; gap:12px; }
-
+  
   .user-pill{
     font-size:0.8rem;
     font-weight:600;
@@ -94,67 +36,6 @@
     overflow:hidden;
     text-overflow:ellipsis;
     white-space:nowrap;
-  }
-
-  .menu-wrap{ position:relative; }
-  .hamburger-btn{
-    display:flex; flex-direction:column; justify-content:center; align-items:center; gap:5px;
-    width:42px; height:42px;
-    border-radius:12px;
-    border:1.5px solid var(--line);
-    background:var(--white);
-    cursor:pointer;
-    transition: border-color .2s ease, background .2s ease;
-  }
-  .hamburger-btn:hover{ border-color:var(--orange-light); background:var(--peach); }
-  .hamburger-btn span{
-    display:block; width:18px; height:2px; border-radius:2px;
-    background:var(--ink);
-    transition: transform .25s ease, opacity .2s ease;
-  }
-  .hamburger-btn.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); }
-  .hamburger-btn.open span:nth-child(2){ opacity:0; }
-  .hamburger-btn.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); }
-
-  .dropdown-menu{
-    position:absolute; top:calc(100% + 10px); right:0;
-    min-width:200px;
-    background:var(--white);
-    border:1.5px solid var(--line);
-    border-radius:16px;
-    box-shadow:0 20px 40px -16px rgba(25,21,18,0.22);
-    padding:10px;
-    opacity:0; transform:translateY(-6px);
-    pointer-events:none;
-    transition: opacity .18s ease, transform .18s ease;
-  }
-  .dropdown-menu.show{ opacity:1; transform:translateY(0); pointer-events:auto; }
-  .dropdown-menu a, .dropdown-menu button.menu-item{
-    display:flex; align-items:center; gap:10px;
-    width:100%;
-    padding:12px 14px;
-    border-radius:10px;
-    text-decoration:none;
-    color:var(--ink);
-    font-weight:500;
-    font-size:0.9rem;
-    background:none;
-    border:none;
-    box-shadow:none;
-    cursor:pointer;
-    text-align:left;
-    font-family:'Inter', sans-serif;
-    transition: background .15s ease, color .15s ease;
-  }
-  .dropdown-menu a:hover, .dropdown-menu button.menu-item:hover{ background:var(--peach); color:var(--orange-dark); }
-  .dropdown-menu .menu-icon{ width:20px; text-align:center; flex-shrink:0; }
-  .dropdown-menu .divider-line{ height:1px; background:var(--line); margin:6px 4px; }
-
-  main{
-    position:relative; z-index:2;
-    max-width:920px;
-    margin:0 auto;
-    padding: 1vh 6vw 8vh;
   }
 
   .page-head{
@@ -517,31 +398,7 @@
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
-
-<header>
-  <a href="https://fareless.app" class="logo-link">
-    <span class="logo"><span class="dot"></span>Fareless</span>
-  </a>
-
-  <div class="header-right">
-    <div class="user-pill" id="user-pill" style="display:none;">
-      <span class="avatar" id="user-avatar">–</span>
-      <span class="u-email" id="user-email"></span>
-    </div>
-
-    <div class="menu-wrap">
-      <button class="hamburger-btn" id="hamburger-btn" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="dropdown-menu" id="dropdown-menu">
-        <a href="/calculator/calculator>Tourist Calculator</a>
-        <a href="/travel_info/Edinburgh">Edinburgh Travel</a>
-        <div class="divider-line"></div>
-        <button type="button" class="menu-item" id="logout-btn"><span class="menu-icon"></span>Log out</button>
-      </nav>
-    </div>
-  </div>
-</header>
+<div id="header-container"></div>
 
 <main>
   <div class="page-head">
@@ -671,7 +528,10 @@
     </form>
   </div>
 </div>
+  
+<div id="footer-container"></div>
 
+  
 <script type="module">
 import { createClient } from 'https://esm.sh/@supabase/supabase-js'
 
@@ -1033,27 +893,6 @@ function intOrNull(id) {
   return v === '' ? null : parseInt(v, 10)
 }
 
-// ---------- Hamburger menu ----------
-const hamburgerBtn = document.getElementById('hamburger-btn')
-const dropdownMenu = document.getElementById('dropdown-menu')
-function closeMenu() {
-  hamburgerBtn.classList.remove('open')
-  hamburgerBtn.setAttribute('aria-expanded', 'false')
-  dropdownMenu.classList.remove('show')
-}
-hamburgerBtn.addEventListener('click', (e) => {
-  e.stopPropagation()
-  const isOpen = dropdownMenu.classList.toggle('show')
-  hamburgerBtn.classList.toggle('open', isOpen)
-  hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false')
-})
-document.addEventListener('click', (e) => { if (!e.target.closest('.menu-wrap')) closeMenu() })
-
-document.getElementById('logout-btn').addEventListener('click', async () => {
-  await supabase.auth.signOut()
-  window.location.href = 'login.html'
-})
-
 // ---------- Init ----------
 ;(async function init() {
   currentUser = await initAuth()
@@ -1063,6 +902,8 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
   await loadJourneys()
 })()
 </script>
-
+  
+<script src="../../assets/components/header.js"></script>
+<script src="../../assets/components/footer.js"></script>
 </body>
 </html>
