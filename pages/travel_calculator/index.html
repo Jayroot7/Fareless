@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../styles.css">
 <style>
   :root{
     --orange: #FF5A1F;
@@ -326,16 +327,7 @@
 
 <div class="blob blob-1"></div>
 <div class="blob blob-2"></div>
-
-<header>
-<div class="logo">
-  <a href="https://fareless.app" class="logo-link">
-    <span class="dot"></span>Fareless
-  </a>
-</div>
-
-  <div class="nav-badge">Edinburgh trip tool</div>
-</header>
+<div id="header-container"></div>
 
 <main>
   <span class="eyebrow">🚊 Visiting Edinburgh?</span>
@@ -390,10 +382,7 @@
   <div id="results"></div>
 </main>
 
-<footer>
-  Ticket prices from the current Lothian Buses &amp; Edinburgh Trams rate card. Always double‑check live prices before you travel.
-  <br>© 2026 Fareless. All rights reserved. · <a href="index.html">Back to Fareless</a>
-</footer>
+<div id="footer-container"></div>
 
 <script>
   // ---- Fare data (from current rate card) ----
@@ -602,6 +591,7 @@
 
   document.getElementById('calcBtn').addEventListener('click', calculate);
 </script>
-
+<script src="../assets/components/header.js"></script>
+<script src="../assets/components/footer.js"></script>
 </body>
 </html>
