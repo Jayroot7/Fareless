@@ -87,13 +87,13 @@ header{
 }
 .hamburger-btn:hover{ border-color:var(--orange-light); background:var(--peach); transform:none; }
 .hamburger-btn span{
-  display:block; width:22px; height:3px; border-radius:1px;
+  display:block; width:20px; height:3px; border-radius:1px;
   background:var(--ink);
   transition: transform .25s ease, opacity .2s ease;
 }
 .hamburger-btn.open span:nth-child(1){ transform: translateY(8px) rotate(45deg); }
 .hamburger-btn.open span:nth-child(2){ opacity:0; }
-.hamburger-btn.open span:nth-child(3){ transform: translateY(8px) rotate(-45deg); }
+.hamburger-btn.open span:nth-child(3){ transform: translateY(-8px) rotate(-45deg); }
 
 .dropdown-menu{
   position:absolute; top:calc(100% + 10px); right:0;
