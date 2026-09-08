@@ -12,6 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         <p class="footer-tagline">Want to Beta Test or become a Dev? Join the waitlist for updates.</p>
         <p class="footer-copyright">&copy; ${new Date().getFullYear()} Fareless. All rights reserved.</p>
       </div>
+
+      <ul>
+        <li><a href="fareless.app/pages/terms-and-conditions/">Terms and Conditions</a></li>
+        <li><a href="fareless.app/pages/privacy-notice/">Privacy Notice</a></li>
+      </ul>
+      
     </footer>
   `;
 });
