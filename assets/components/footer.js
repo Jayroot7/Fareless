@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
 
       <ul>
-        <li><a href="${pathPrefix}/pages/terms-and-conditions/">Terms and Conditions</a></li>
-        <li><a href="${pathPrefix}/pages/privacy-notice/">Privacy Notice</a></li>
+        <li><a href="${pathPrefix}pages/terms-and-conditions/">Terms and Conditions</a></li>
+        <li><a href="${pathPrefix}pages/privacy-notice/">Privacy Notice</a></li>
       </ul>
       
     </footer>
