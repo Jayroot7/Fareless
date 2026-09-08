@@ -45,7 +45,7 @@ header{
 }
 
 .logo{
-  font-family:'Fredoka', sans-serif;
+  font-family:'Raleway', sans-serif;
   font-weight:600;
   font-size:1.4rem;
   letter-spacing:-0.02em;
@@ -155,7 +155,7 @@ main{
 }
 
 h1{
-  font-family:'Fredoka', sans-serif;
+  font-family:'Raleway', sans-serif;
   font-weight:700;
   font-size:clamp(2.4rem, 6vw, 4rem);
   line-height:1.05;
