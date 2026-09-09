@@ -1,0 +1,11 @@
+--Payback
+
+Future<List<Map<String, dynamic>>> getPassPayback() async {
+  final response = await Supabase.instance.client.rpc(
+    'get_pass_payback',
+  );
+
+  return List<Map<String, dynamic>>.from(
+    response as List,
+  );
+}
