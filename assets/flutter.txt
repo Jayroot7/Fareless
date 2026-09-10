@@ -24,6 +24,12 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    final ButtonStyle buttonStyle = TextButton.styleFrom(
+    backgroundColor: Colors.orange,
+    foregroundColor: Colors.black
+    );
+        
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -33,8 +39,15 @@ class MyHomePage extends StatelessWidget {
         actions: [
             IconButton(
                 icon: const Icon(Icons.apps),
-                onPressed: () {}    
-            )
+                onPressed: () {},
+                tooltip: 'More Options'
+            ),
+            
+            IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {},
+                tooltip: 'Settings'
+             )
         ]
       ),
       bottomNavigationBar: BottomAppBar(
@@ -47,7 +60,7 @@ class MyHomePage extends StatelessWidget {
                 child: Text('Profile')),
               TextButton(
                 onPressed: () {},
-                child: Text('Add Journey')),
+                child: Text('Add Journey')), 
               TextButton(
                 onPressed: () {},
                 child: Text('Insights'))                    
@@ -55,6 +68,48 @@ class MyHomePage extends StatelessWidget {
           ),
         ),
       ),
-      );
+      
+      body: Center(child: Column(
+        children: [
+          Text('Welcome'),
+          
+          
+          Container(child: Column(children: [
+            TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'example@email.com',
+              ),
+            ),
+
+             TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'password',
+              )
+            )
+            ])),
+          
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                
+                        TextButton(
+                          style: buttonStyle,
+                          onPressed: () {},
+                          child: Text('Log in')),
+   
+                        TextButton(
+                          style: buttonStyle,
+                          onPressed: () {},
+                          child: Text('Sign Up'))
+               ]
+             ) //Row 
+         ) //Contianer
+        ] //Column Children
+       ) // Center
+      )
+    );
      }
 }
