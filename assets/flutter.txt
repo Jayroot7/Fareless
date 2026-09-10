@@ -35,7 +35,7 @@ class MyHomePage extends StatelessWidget {
         primary: true,
         foregroundColor: Colors.black,
         backgroundColor: Colors.orange,
-        title: const Text('Dashboard'),
+        title: const Text('Welcome'),
         actions: [
             IconButton(
                 icon: const Icon(Icons.apps),
@@ -57,13 +57,13 @@ class MyHomePage extends StatelessWidget {
             children: [
               TextButton(
                 onPressed: () {},
-                child: Text('Profile')),
+                child: Text('Terms and Conditions')),
               TextButton(
                 onPressed: () {},
-                child: Text('Add Journey')), 
+                child: Text('Support')), 
               TextButton(
                 onPressed: () {},
-                child: Text('Insights'))                    
+                child: Text('Privacy Policy'))                    
             ],
           ),
         ),
@@ -71,8 +71,7 @@ class MyHomePage extends StatelessWidget {
       
       body: Center(child: Column(
         children: [
-          Text('Welcome'),
-          
+       
           
           Container(child: Column(children: [
             TextField(
@@ -97,7 +96,14 @@ class MyHomePage extends StatelessWidget {
                 
                         TextButton(
                           style: buttonStyle,
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Dashboard(),
+                              ),
+                            );
+                          },
                           child: Text('Log in')),
    
                         TextButton(
@@ -112,4 +118,21 @@ class MyHomePage extends StatelessWidget {
       )
     );
      }
+}
+
+
+class Dashboard extends StatelessWidget {
+  const Dashboard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Overview'),
+      ),
+      body: const Center(
+        child: Text('Login Form Here'),
+      ),
+    );
+  }
 }
