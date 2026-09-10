@@ -27,7 +27,7 @@ class MyHomePage extends StatelessWidget {
     
     final ButtonStyle buttonStyle = TextButton.styleFrom(
     backgroundColor: Colors.orange,
-    foregroundColor: Colors.black
+    foregroundColor: Colors.black,
     );
         
     return Scaffold(
@@ -36,19 +36,7 @@ class MyHomePage extends StatelessWidget {
         foregroundColor: Colors.black,
         backgroundColor: Colors.orange,
         title: const Text('Welcome'),
-        actions: [
-            IconButton(
-                icon: const Icon(Icons.apps),
-                onPressed: () {},
-                tooltip: 'More Options'
-            ),
-            
-            IconButton(
-                icon: const Icon(Icons.settings),
-                onPressed: () {},
-                tooltip: 'Settings'
-             )
-        ]
+        
       ),
       bottomNavigationBar: BottomAppBar(
         child: Center(
@@ -70,6 +58,7 @@ class MyHomePage extends StatelessWidget {
       ),
       
       body: Center(child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
        
           
@@ -84,14 +73,16 @@ class MyHomePage extends StatelessWidget {
              TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'password',
+                hintText: 'password'
               )
             )
             ])),
           
           Container(
+   
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 
                         TextButton(
@@ -129,9 +120,22 @@ class Dashboard extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Overview'),
+        actions: [
+            IconButton(
+                icon: const Icon(Icons.apps),
+                onPressed: () {},
+                tooltip: 'More Options'
+            ),
+            
+            IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {},
+                tooltip: 'Settings'
+             )
+        ]
       ),
       body: const Center(
-        child: Text('Login Form Here'),
+        child: Text('Data'),
       ),
     );
   }
